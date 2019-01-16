@@ -1,7 +1,7 @@
 {
   "name": "flower_catalog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Flower Catalog",
   "main": "server.js",
   "directories": {
     "test": "test"
@@ -10,6 +10,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Mahesh Sovani",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEP-tw/fc-maheshsovani.git"
+  },
+  "keywords": [
+    "catalog"
+  ],
+  "bugs": {
+    "url": "https://github.com/STEP-tw/fc-maheshsovani/issues"
+  },
+  "homepage": "https://github.com/STEP-tw/fc-maheshsovani#readme"
 }
