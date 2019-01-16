@@ -1,0 +1,20 @@
+h1 {
+  color: darkorange;
+  text-align: center;
+  border-bottom: 2px solid black;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.flowerImage img {
+  width: 800px;
+  height: 500px;
+}
+
+.rightSideDiv {
+  width: 160px;
+  margin-top: 180px;
+}
