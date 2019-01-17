@@ -1,20 +1,19 @@
 const fs = require('fs');
 
+const getFilePath = function(url) {
+  if (url == '/') {
+    return './flowerCatalog.html';
+  }
+  return `.${url}`;
+};
+
 const app = (req, res) => {
-  if (req.url == '/favicon.ico') {
-    res.statusCode = 404;
+  let filePath = getFilePath(req.url);
+  fs.readFile(filePath, (err, content) => {
+    res.statusCode = 200;
+    res.write(content);
     res.end();
-  }
-  if (req.url) {
-    fs.readFile('.' + req.url, (err, content) => {
-      res.statusCode = 200;
-      res.write(content);
-      res.end();
-    });
-  } else {
-    res.statusCode = 404;
-    res.end();
-  }
+  });
 };
 
 module.exports = app;
