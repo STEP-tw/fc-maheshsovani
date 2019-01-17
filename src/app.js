@@ -9,18 +9,28 @@ const getFilePath = function(url) {
 
 const app = (req, res) => {
   let filePath = getFilePath(req.url);
-
-  fs.readFile(filePath, (err, content) => {
-    try {
-      res.statusCode = 200;
-      res.write(content);
-      res.end();
-    } catch (err) {
-      res.statusCode = 404;
-      res.write('Not Found');
-      res.end();
-    }
-  });
+  if (req.method == 'GET') {
+    fs.readFile(filePath, (err, content) => {
+      try {
+        res.statusCode = 200;
+        res.write(content);
+        res.end();
+      } catch (err) {
+        res.statusCode = 404;
+        res.write('Not Found');
+        res.end();
+      }
+    });
+  }
+  if (req.url == '/guestBook.html') {
+    let content = '';
+    req.on('data', chunk => {
+      content += chunk;
+    });
+    req.on('end', () => {
+      fs.appendFileSync('./comments.json', '\n' + content, 'utf8');
+    });
+  }
 };
 
 module.exports = app;
