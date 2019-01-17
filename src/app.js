@@ -17,7 +17,7 @@ const app = (req, res) => {
       res.end();
     } catch (err) {
       res.statusCode = 404;
-      res.write('this file does not exist');
+      res.write('Not Found');
       res.end();
     }
   });
