@@ -8,6 +8,12 @@ header {
   border: 1px solid black;
   border-radius: 3px;
 }
+
 td {
-  padding-right: 300px;
+  border: 1px solid black;
+  width: 400px;
+}
+
+table {
+  border: 1px solid black;
 }

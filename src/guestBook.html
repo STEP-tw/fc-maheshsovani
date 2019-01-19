@@ -10,7 +10,7 @@
     <header>
       <h1><a href="/flowerCatalog.html"><<</a>Guest Book</h1>
     </header>
-    <form name="commentForm" method="GET">
+    <form method="POST">
       <h1>Leave a comment</h1>
       Name : <input type="text" name="name" /> <br />
       Comment:
@@ -23,12 +23,11 @@
     <hr />
     <div>
       <table id="commentTable">
-        <tr>
+        <thead>
           <td>DATE_TIME</td>
           <td>NAME</td>
           <td>COMMENTS_LIST</td>
-        </tr>
-      </table>
+        </thead>
     </div>
   </body>
 </html>

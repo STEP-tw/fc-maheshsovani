@@ -3,3 +3,29 @@ const hideImage = function() {
   jar.style.visibility = 'hidden';
   setTimeout(() => (jar.style.visibility = 'visible'), 1000);
 };
+
+const withTag = function(content, tag) {
+  return `<${tag}>${content}</${tag}>`;
+};
+const createTableRow = function(object) {
+  let row = '';
+  row = row + withTag(object.time, 'td');
+  row = row + withTag(object.name, 'td');
+  row = row + withTag(object.comment, 'td');
+  return withTag(row, 'tr');
+};
+
+const createTable = function(list) {
+  let table = '';
+  table = list.map(element => createTableRow(element)).join('');
+  return withTag(table, 'table');
+};
+
+const arrangeCommentDetails = function(details) {
+  let time = new Date().toLocaleString();
+  let name = details.split('&')[0].split('=')[1];
+  let comment = details.split('&')[1].split('=')[1];
+  return { name, comment, time };
+};
+
+module.exports = { createTable, arrangeCommentDetails };
