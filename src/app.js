@@ -4,7 +4,7 @@ const { createTable, arrangeCommentDetails } = require('./main.js');
 
 const getFilePath = function(url) {
   if (url == '/') {
-    return './flowerCatalog.html';
+    return './public/flowerCatalog.html';
   }
   return `.${url}`;
 };
@@ -16,7 +16,7 @@ const sendResponse = function(res, content, statusCode = 200) {
 };
 
 const renderGuestBook = function(req, res) {
-  fs.readFile('./src/guestBook.html', (err, data) => {
+  fs.readFile('./public/guestBook.html', (err, data) => {
     data += createTable(comments);
     sendResponse(res, data);
   });
@@ -50,12 +50,12 @@ const handleRequest = function(req, res) {
 };
 
 const app = (req, res) => {
-  if (req.url == '/src/guestBook.html' && req.method == 'POST') {
+  if (req.url == '/public/guestBook.html' && req.method == 'POST') {
     handleGuestForm(req, res);
     return;
   }
 
-  if (req.url == '/src/guestBook.html' && req.method == 'GET') {
+  if (req.url == '/public/guestBook.html' && req.method == 'GET') {
     renderGuestBook(req, res);
     return;
   }
