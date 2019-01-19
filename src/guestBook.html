@@ -3,9 +3,7 @@
   <head>
     <title>Guest Book</title>
     <link rel="stylesheet" type="text/css" href="/src/guestBook.css" />
-    <script src="/main.js"></script>
   </head>
-
   <body>
     <header>
       <h1><a href="/flowerCatalog.html"><<</a>Guest Book</h1>
@@ -28,6 +26,14 @@
           <td>NAME</td>
           <td>COMMENTS_LIST</td>
         </thead>
+      </table>
     </div>
   </body>
+  <script>
+    let hideImage = function() {
+      let jar = document.getElementById('jarImage');
+      jar.style.visibility = 'hidden';
+      setTimeout(() => (jar.style.visibility = 'visible'), 1000);
+    };
+  </script>
 </html>

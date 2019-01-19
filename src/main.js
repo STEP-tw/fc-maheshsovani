@@ -1,12 +1,7 @@
-const hideImage = function() {
-  let jar = document.getElementById('jarImage');
-  jar.style.visibility = 'hidden';
-  setTimeout(() => (jar.style.visibility = 'visible'), 1000);
-};
-
 const withTag = function(content, tag) {
   return `<${tag}>${content}</${tag}>`;
 };
+
 const createTableRow = function(object) {
   let row = '';
   row = row + withTag(object.time, 'td');

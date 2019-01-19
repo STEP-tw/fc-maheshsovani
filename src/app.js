@@ -9,48 +9,56 @@ const getFilePath = function(url) {
   return `.${url}`;
 };
 
-const renderGuestBook = function(res) {
+const sendResponse = function(res, content, statusCode = 200) {
+  res.statusCode = statusCode;
+  res.write(content);
+  res.end();
+};
+
+const renderGuestBook = function(req, res) {
   fs.readFile('./src/guestBook.html', (err, data) => {
     data += createTable(comments);
-    res.write(data);
-    res.end();
+    sendResponse(res, data);
+  });
+};
+
+const handleGuestForm = function(req, res) {
+  let content = '';
+  req.on('data', chunk => {
+    content += chunk;
+  });
+  req.on('end', () => {
+    comments.unshift(arrangeCommentDetails(content));
+    let dataToWrite = JSON.stringify(comments);
+    fs.writeFile('./src/comments.json', dataToWrite, err => {
+      return;
+    });
+  });
+  renderGuestBook(req, res);
+};
+
+const handleRequest = function(req, res) {
+  let filePath = getFilePath(req.url);
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      sendResponse(res, 'Not Found', 404);
+      return;
+    }
+    sendResponse(res, content);
+    return;
   });
 };
 
 const app = (req, res) => {
   if (req.url == '/src/guestBook.html' && req.method == 'POST') {
-    let content = '';
-    req.on('data', chunk => {
-      content += chunk;
-    });
-    req.on('end', () => {
-      comments.unshift(arrangeCommentDetails(content));
-      let dataToWrite = JSON.stringify(comments);
-      fs.writeFile('./src/comments.json', dataToWrite, err => {
-        return;
-      });
-    });
-    renderGuestBook(res);
+    handleGuestForm(req, res);
     return;
   }
 
   if (req.url == '/src/guestBook.html' && req.method == 'GET') {
-    renderGuestBook(res);
+    renderGuestBook(req, res);
     return;
   }
-
-  let filePath = getFilePath(req.url);
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      res.statusCode = 404;
-      res.write('Not Found');
-      res.end();
-      return;
-    }
-    res.statusCode = 200;
-    res.write(content);
-    res.end();
-    return;
-  });
+  handleRequest(req, res);
 };
 module.exports = app;
