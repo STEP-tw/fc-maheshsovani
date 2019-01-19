@@ -22,7 +22,19 @@ const renderGuestBook = function(req, res) {
   });
 };
 
-const handleGuestForm = function(req, res) {
+const renderMedia = function(req, res) {
+  let filePath = getFilePath(req.url);
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      sendResponse(res, 'Not Found', 404);
+      return;
+    }
+    sendResponse(res, content);
+    return;
+  });
+};
+
+const handleFormPost = function(req, res) {
   let content = '';
   req.on('data', chunk => {
     content += chunk;
@@ -37,28 +49,48 @@ const handleGuestForm = function(req, res) {
   renderGuestBook(req, res);
 };
 
-const handleRequest = function(req, res) {
-  let filePath = getFilePath(req.url);
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      sendResponse(res, 'Not Found', 404);
+class App {
+  constructor() {
+    this.routes = [];
+  }
+
+  handler(req, res) {
+    const matchedRoutes = this.routes.filter(
+      route => route.method == req.method && route.url == req.url
+    );
+
+    if (matchedRoutes.length > 0) {
+      matchedRoutes[0].handler(req, res);
       return;
     }
-    sendResponse(res, content);
-    return;
-  });
-};
 
-const app = (req, res) => {
-  if (req.url == '/public/guestBook.html' && req.method == 'POST') {
-    handleGuestForm(req, res);
-    return;
+    res.write('Sorry i dont have that info.');
+    res.end();
   }
 
-  if (req.url == '/public/guestBook.html' && req.method == 'GET') {
-    renderGuestBook(req, res);
-    return;
+  get(url, handler) {
+    this.routes.push({ url, handler, method: 'GET' });
   }
-  handleRequest(req, res);
-};
-module.exports = app;
+
+  post(url, handler) {
+    this.routes.push({ url, handler, method: 'POST' });
+  }
+}
+const app = new App();
+const requestHandler = app.handler.bind(app);
+app.get('/', renderMedia);
+app.get('/public/images/animated-flower-image-0021.gif', renderMedia);
+app.get('/public/images/pbase-Abeliophyllum.jpg', renderMedia);
+app.get('/public/images/pbase-agerantum.jpg', renderMedia);
+app.get('/public/images/freshorigins.jpg', renderMedia);
+app.get('/public/media/Abeliophyllum.pdf', renderMedia);
+app.get('/public/media/Ageratum.pdf', renderMedia);
+app.get('/public/abeliophyllum.html', renderMedia);
+app.get('/public/ageratum.html', renderMedia);
+app.get('/public/flowerDescription.css', renderMedia);
+app.get('/public/guestBook.css', renderMedia);
+app.get('/public/stylesheet.css', renderMedia);
+app.get('/public/guestBook.html', renderGuestBook);
+app.post('/public/guestBook.html', handleFormPost);
+
+module.exports = requestHandler;
