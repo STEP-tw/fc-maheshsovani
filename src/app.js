@@ -17,6 +17,8 @@ const sendResponse = function(res, content, statusCode = 200) {
 };
 
 const renderGuestBook = function(req, res) {
+  console.log(comments);
+
   fs.readFile('./public/guestBook.html', (err, data) => {
     data += createTable(comments);
     sendResponse(res, data);
@@ -67,8 +69,8 @@ class App {
   }
 
   handler(req, res) {
-    const matchedRoutes = this.routes.filter(isMatching.bind(null, req));
-    console.log(matchedRoutes);
+    let isValidRoute = isMatching.bind(null, req);
+    const matchedRoutes = this.routes.filter(isValidRoute);
 
     let next = () => {
       if (matchedRoutes.length == 0) {
@@ -93,9 +95,11 @@ class App {
     this.routes.push({ handler });
   }
 }
+
 const app = new App();
 const requestHandler = app.handler.bind(app);
-app.use(renderMedia);
 app.post('/public/guestBook.html', handleFormPost);
+app.get('/public/guestBook.html', renderGuestBook);
+app.use(renderMedia);
 
 module.exports = requestHandler;
