@@ -1,4 +1,6 @@
 const fs = require('fs');
+const App = require('./framework.js');
+const app = new App();
 const comments = require('./comments.json');
 const { createTable, arrangeCommentDetails } = require('./main.js');
 
@@ -17,8 +19,6 @@ const sendResponse = function(res, content, statusCode = 200) {
 };
 
 const renderGuestBook = function(req, res) {
-  console.log(comments);
-
   fs.readFile('./public/guestBook.html', (err, data) => {
     data += createTable(comments);
     sendResponse(res, data);
@@ -53,53 +53,8 @@ const handleFormPost = function(req, res) {
   renderGuestBook(req, res);
 };
 
-const isMatching = function(req, route) {
-  if (route.handler && !(route.method || route.url)) {
-    return true;
-  }
-  if (route.method == req.method && route.url == req.url) {
-    return true;
-  }
-  return false;
-};
-
-class App {
-  constructor() {
-    this.routes = [];
-  }
-
-  handler(req, res) {
-    let isValidRoute = isMatching.bind(null, req);
-    const matchedRoutes = this.routes.filter(isValidRoute);
-
-    let next = () => {
-      if (matchedRoutes.length == 0) {
-        return;
-      }
-      let currentRoute = matchedRoutes[0];
-      matchedRoutes.shift();
-      currentRoute.handler(req, res, next);
-    };
-    next();
-  }
-
-  get(url, handler) {
-    this.routes.push({ url, handler, method: 'GET' });
-  }
-
-  post(url, handler) {
-    this.routes.push({ url, handler, method: 'POST' });
-  }
-
-  use(handler) {
-    this.routes.push({ handler });
-  }
-}
-
-const app = new App();
-const requestHandler = app.handler.bind(app);
 app.post('/public/guestBook.html', handleFormPost);
 app.get('/public/guestBook.html', renderGuestBook);
 app.use(renderMedia);
 
-module.exports = requestHandler;
+module.exports = app.handler.bind(app);

@@ -6,28 +6,16 @@
   </head>
   <body>
     <header>
-      <h1><a href="/flowerCatalog.html"><<</a>Guest Book</h1>
+      <h1><a href="/public/flowerCatalog.html"><<</a>Guest Book</h1>
     </header>
     <form method="POST">
       <h1>Leave a comment</h1>
-      Name : <input type="text" name="name" required /> <br />
-      Comment:
-      <textarea name="comment" id="userComment" cols="40" rows="5"></textarea>
-      <br />
-      <button class="submitButton" onclick="displayTableOfcomments(document)">
-        Submit
-      </button>
+      Name: <input type="text" name="name" required /> <br />
+      Comment: <textarea name="comment" cols="50" rows="5"></textarea> <br />
+      <input type="submit" value="submit" class="submitButton" />
     </form>
     <hr />
-    <div>
-      <table id="commentTable">
-        <thead>
-          <td>DATE_TIME</td>
-          <td>NAME</td>
-          <td>COMMENTS_LIST</td>
-        </thead>
-      </table>
-    </div>
+    <div id="userComments"></div>
   </body>
   <script>
     let hideImage = function() {
