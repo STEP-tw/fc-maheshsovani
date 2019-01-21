@@ -3,6 +3,7 @@
   <head>
     <title>Guest Book</title>
     <link rel="stylesheet" type="text/css" href="/public/guestBook.css" />
+    <script src="/src/fetch.js"></script>
   </head>
   <body>
     <header>
@@ -15,13 +16,6 @@
       <input type="submit" value="submit" class="submitButton" />
     </form>
     <hr />
-    <div id="userComments"></div>
+    <button onclick="fetchComments()">REFRESH</button>
   </body>
-  <script>
-    let hideImage = function() {
-      let jar = document.getElementById('jarImage');
-      jar.style.visibility = 'hidden';
-      setTimeout(() => (jar.style.visibility = 'visible'), 1000);
-    };
-  </script>
 </html>
