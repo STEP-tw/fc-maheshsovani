@@ -38,7 +38,7 @@ const renderMedia = function(req, res) {
   });
 };
 
-const handleFormPost = function(req, res) {
+const recordComments = function(req, res) {
   let content = '';
   req.on('data', chunk => {
     content += chunk;
@@ -53,15 +53,8 @@ const handleFormPost = function(req, res) {
   renderGuestBook(req, res);
 };
 
-const sendComments = function(req, res) {
-  fs.readFile('./src/comments.json', 'utf8', (err, content) => {
-    sendResponse(res, content);
-  });
-};
-
-app.post('/public/guestBook.html', handleFormPost);
+app.post('/public/guestBook.html', recordComments);
 app.get('/public/guestBook.html', renderGuestBook);
-app.get('/public/comments', sendComments);
 app.use(renderMedia);
 
 module.exports = app.handler.bind(app);

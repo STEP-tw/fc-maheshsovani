@@ -12,7 +12,6 @@ const createTableRow = function(object) {
 
 const createTable = function(list) {
   let table = '';
-  console.log(typeof list);
   table += '<th>DATE_TIME</th><th>NAME</th><th>COMMENTS_LIST</th>';
   table += list.map(element => createTableRow(element)).join('');
   return (
