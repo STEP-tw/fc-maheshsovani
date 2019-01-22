@@ -2,21 +2,24 @@
 <html>
   <head>
     <title>Guest Book</title>
-    <link rel="stylesheet" type="text/css" href="/public/guestBook.css" />
-    <script src="/src/refreshGuestBook.js"></script>
+    <link rel="stylesheet" type="text/css" href="/guestBook.css" />
+    <script src="/refreshGuestBook.js"></script>
   </head>
   <body>
     <header>
-      <h1><a href="/public/flowerCatalog.html"><<</a>Guest Book</h1>
+      <h1><a href="/"><<</a>Guest Book</h1>
     </header>
     <form method="POST">
       <h1>Login to Comment</h1>
-      Name: <input type="text" name="name" required /> <button>Login</button
-      ><br />
+      Name: <input type="text" name="name" required />
+      <button class="submitButton">Login</button><br />
       Comment: <textarea name="comment" cols="50" rows="5"></textarea> <br />
       <input type="submit" value="submit" class="submitButton" />
     </form>
     <hr />
-    <button onclick="fetchComments()">REFRESH</button>
+    <h3>
+      Comments
+      <button class="submitButton" onclick="fetchComments()">&#x21bb;</button>
+    </h3>
   </body>
 </html>

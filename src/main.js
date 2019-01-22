@@ -12,19 +12,18 @@ const createTableRow = function(object) {
 
 const createTable = function(list) {
   let table = '';
-  table += '<th>DATE_TIME</th><th>NAME</th><th>COMMENTS_LIST</th>';
+  let heading = ['NAME', 'DATE_TIME', 'COMMENT_LIST'];
+  table += heading.map(e => withTag(e, 'th')).join('');
   table += list.map(element => createTableRow(element)).join('');
-  return (
-    "<div id='userComments' class='comments'>" +
-    withTag(table, 'table') +
-    '</div>'
-  );
+  table = withTag(table, 'table');
+  return "<div id='userComments' class='comments'>" + table + '</div>';
 };
 
 const arrangeCommentDetails = function(details) {
   let time = new Date().toLocaleString();
-  let name = details.split('&')[0].split('=')[1];
-  let comment = details.split('&')[1].split('=')[1];
+  let name = details.split(/&|=/)[1];
+  let comment = details.split(/&|=/)[3];
+  [name, comment] = [name, comment].map(x => unescape(x).replace(/\+/g, ' '));
   return { name, comment, time };
 };
 
