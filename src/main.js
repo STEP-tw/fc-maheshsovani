@@ -4,7 +4,8 @@ const withTag = function(content, tag) {
 
 const createTableRow = function(object) {
   let row = '';
-  row = row + withTag(object.time, 'td');
+  let time = new Date(object.time).toLocaleString();
+  row = row + withTag(time, 'td');
   row = row + withTag(object.name, 'td');
   row = row + withTag(object.comment, 'td');
   return withTag(row, 'tr');
@@ -12,7 +13,7 @@ const createTableRow = function(object) {
 
 const createTable = function(list) {
   let table = '';
-  let heading = ['NAME', 'DATE_TIME', 'COMMENT_LIST'];
+  let heading = ['DATE_TIME', 'NAME', 'COMMENT_LIST'];
   table += heading.map(e => withTag(e, 'th')).join('');
   table += list.map(element => createTableRow(element)).join('');
   table = withTag(table, 'table');
@@ -20,7 +21,7 @@ const createTable = function(list) {
 };
 
 const arrangeCommentDetails = function(details) {
-  let time = new Date().toLocaleString();
+  let time = new Date();
   let name = details.split(/&|=/)[1];
   let comment = details.split(/&|=/)[3];
   [name, comment] = [name, comment].map(x => unescape(x).replace(/\+/g, ' '));
